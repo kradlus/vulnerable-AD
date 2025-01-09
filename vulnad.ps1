@@ -226,7 +226,7 @@ function VulnAD-DisableFirewall {
 function VulnAD-EnableSMBv1 {
     Install-WindowsFeature FS-SMB1
     mkdir C:\SharedFolder
-    Enable-WindowsOptionalFeature -Online -FeatureName SMB1Protocol -NoRestart
+    Enable-WindowsOptionalFeature -Online -FeatureName SMB1Protocol -All -NoRestart
     Set-SmbServerConfiguration -EnableSMB1Protocol $true -Force
     New-SmbShare -Name "SharedFolder" -Path "C:\SharedFolder" -FullAccess "Everyone"
 }
