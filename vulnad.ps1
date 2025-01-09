@@ -212,7 +212,8 @@ function VulnAD-DCSync {
     }
 }
 function VulnAD-DisableSMBSigning {
-    Set-SmbServerConfiguration -RequireSecuritySignature 0 -EnableSecuritySignature 0 -Confirm -Force
+    Set-SmbServerConfiguration -EnableInsecureGuestLogons $true -RequireSecuritySignature 0 -EnableSecuritySignature 0 -Confirm -Force
+    Set-SmbClientConfiguration -EnableInsecureGuestLogons $true -RequireSecuritySignature 0 -EnableSecuritySignature 0 -Confirm -Force
 }
 function VulnAD-DisableFirewall {
     Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
