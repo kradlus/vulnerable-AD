@@ -212,7 +212,7 @@ function VulnAD-DCSync {
     }
 }
 function VulnAD-DisableSMBSigning {
-    Set-SmbClientConfiguration -RequireSecuritySignature 0 -EnableSecuritySignature 0 -Confirm -Force
+    Set-SmbServerConfiguration -RequireSecuritySignature 0 -EnableSecuritySignature 0 -Confirm -Force
 }
 function VulnAD-DisableFirewall {
     Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
@@ -252,6 +252,8 @@ function Invoke-VulnAD {
     Write-Good "Password Spraying Done"
     VulnAD-DCSync
     Write-Good "DCSync Done"
+    # VulnAD-DisableFirewall
+    # Write-Good "Disabled Firewall"
     VulnAD-DisableSMBSigning
     Write-Good "SMB Signing Disabled"
 }
