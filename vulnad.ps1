@@ -211,8 +211,13 @@ function VulnAD-DCSync {
         Write-Info "Giving DCSync to : $randomuser"
     }
 }
+function VulnAD-EnableSMBGuest {
+    Set-SmbServerConfiguration -EnableAuthenticateUserSharing $false -Force
+    Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters" -Name "RestrictNullSessAccess" -Value 0
+    Enable-LocalUser -Name "Guest"
+}
 function VulnAD-DisableSMBSigning {
-    Set-SmbServerConfiguration -EnableInsecureGuestLogons $true -RequireSecuritySignature 0 -EnableSecuritySignature 0 -Confirm -Force
+    Set-SmbServerConfiguration -RequireSecuritySignature 0 -EnableSecuritySignature 0 -Confirm -Force
     Set-SmbClientConfiguration -EnableInsecureGuestLogons $true -RequireSecuritySignature 0 -EnableSecuritySignature 0 -Confirm -Force
 }
 function VulnAD-DisableFirewall {
@@ -257,4 +262,6 @@ function Invoke-VulnAD {
     # Write-Good "Disabled Firewall"
     VulnAD-DisableSMBSigning
     Write-Good "SMB Signing Disabled"
+    VulnAD-EnableSMBGuest
+    Write-Good "SMB Guest Logons Enabled"
 }
