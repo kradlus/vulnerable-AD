@@ -219,6 +219,9 @@ function VulnAD-EnableSMBGuest {
 function VulnAD-DisableSMBSigning {
     Set-SmbServerConfiguration -RequireSecuritySignature 0 -EnableSecuritySignature 0 -Confirm -Force
     Set-SmbClientConfiguration -EnableInsecureGuestLogons $true -RequireSecuritySignature 0 -EnableSecuritySignature 0 -Confirm -Force
+    New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters" -Name RequireSecuritySignature -Value 0 -PropertyType DWord -Force
+    New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters" -Name RequireSecuritySignature -Value 0 -PropertyType DWord -Force
+    New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters" -Name EnableSecuritySignature -Value 0 -PropertyType DWord -Force
 }
 function VulnAD-DisableFirewall {
     Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
